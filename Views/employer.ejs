@@ -1,0 +1,78 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 text-primary">Post a Job (Employer Portal)</h2>
+                    <p class="text-muted mb-4">Fill out the details below to post a vacancy. All new jobs require admin approval before appearing on the public job board.</p>
+                    
+                    <form id="employer-job-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Job Title</label>
+                                <input type="text" class="form-control" id="job-title" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Company Name</label>
+                                <input type="text" class="form-control" id="job-company" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Location (District)</label>
+                                <input type="text" class="form-control" id="job-location" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Sector</label>
+                                <select class="form-select" id="job-sector">
+                                    <option value="IT">IT & Tech</option>
+                                    <option value="Construction">Construction</option>
+                                    <option value="Agriculture">Agriculture</option>
+                                    <option value="Healthcare">Healthcare</option>
+                                    <option value="Energy">Energy</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Job Type</label>
+                                <select class="form-select" id="job-type">
+                                    <option value="Full-time">Full-time</option>
+                                    <option value="Part-time">Part-time</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Salary (e.g., ₹15,000/month)</label>
+                                <input type="text" class="form-control" id="job-salary">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Number of Vacancies</label>
+                                <input type="number" class="form-control" id="job-vacancies" min="1" value="1">
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Job Description</label>
+                            <textarea class="form-control" id="job-description" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Requirements (Comma separated)</label>
+                            <input type="text" class="form-control" id="job-requirements" placeholder="e.g., Node.js, 2 years experience, B.Tech">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 py-2">Submit Job for Approval</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/javascripts/employer.js"></script>

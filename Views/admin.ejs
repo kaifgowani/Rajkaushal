@@ -1,0 +1,71 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="text-primary"><i class="bx bx-shield-quarter"></i> Admin Dashboard</h2>
+            <p class="text-muted">Review and approve employer job postings.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <% if (pendingJobs.length === 0) { %>
+            <div class="col-12 text-center p-5 bg-light rounded">
+                <h4 class="text-muted mb-0">No pending jobs to review. You're all caught up!</h4>
+            </div>
+        <% } else { %>
+            <% pendingJobs.forEach(job => { %>
+                <div class="col-md-6 mb-4" id="job-card-<%= job._id %>">
+                    <div class="card shadow-sm border-warning border-start border-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= job.title %></h5>
+                            <h6 class="card-subtitle mb-3 text-muted"><%= job.company %> | <%= job.location %></h6>
+                            <p class="card-text small text-muted"><%= job.description %></p>
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-sm btn-success approve-btn" data-id="<%= job._id %>">
+                                    <i class="bx bx-check"></i> Approve Job
+                                </button>
+                                <button class="btn btn-sm btn-danger reject-btn" data-id="<%= job._id %>">
+                                    <i class="bx bx-x"></i> Reject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Approve Job
+    document.querySelectorAll('.approve-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const jobId = e.target.closest('button').dataset.id;
+            const res = await fetch(`/api/admin/approve-job/${jobId}`, { method: 'POST' });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById(`job-card-${jobId}`).remove();
+                alert('Job approved! It is now live on the public jobs board.');
+            }
+        });
+    });
+
+    // Reject Job
+    document.querySelectorAll('.reject-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            if (!confirm('Are you sure you want to reject and delete this job posting?')) return;
+            const jobId = e.target.closest('button').dataset.id;
+            const res = await fetch(`/api/admin/reject-job/${jobId}`, { method: 'DELETE' });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById(`job-card-${jobId}`).remove();
+            }
+        });
+    });
+});
+</script>

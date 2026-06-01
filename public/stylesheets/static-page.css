@@ -1,0 +1,136 @@
+/* static-page.css — shared styles for employer, counselling, resources, schemes, contact */
+
+.static-page-container {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem 4rem;
+}
+
+.static-hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    border-bottom: 2px solid #e8eaf0;
+    margin-bottom: 2.5rem;
+}
+.static-hero h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a3c6e;
+    margin-bottom: 0.5rem;
+}
+.static-hero h1 i {
+    margin-right: 0.5rem;
+    color: #e67e22;
+}
+.static-hero p {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Info cards grid */
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+.info-card {
+    background: #fff;
+    border: 1px solid #e0e4ed;
+    border-radius: 10px;
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.2s;
+}
+.info-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.09); }
+.info-card i {
+    font-size: 2.2rem;
+    color: #1a3c6e;
+    margin-bottom: 1rem;
+    display: block;
+}
+.info-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; color: #222; }
+.info-card p { color: #666; font-size: 0.93rem; }
+.card-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    color: #1a3c6e;
+    font-weight: 600;
+    text-decoration: none;
+}
+.card-link:hover { text-decoration: underline; }
+
+/* CTA section */
+.cta-section {
+    background: #f0f4ff;
+    border-radius: 10px;
+    padding: 2.5rem;
+    text-align: center;
+}
+.cta-section h2 { font-size: 1.5rem; font-weight: 700; color: #1a3c6e; margin-bottom: 0.5rem; }
+.cta-section p { color: #555; margin-bottom: 1.5rem; }
+.cta-btn {
+    display: inline-block;
+    background: #1a3c6e;
+    color: #fff;
+    padding: 0.7rem 2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.cta-btn:hover { background: #e67e22; color: #fff; }
+
+/* Resource list */
+.resource-list { display: flex; flex-direction: column; gap: 1.2rem; }
+.resource-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    background: #fff;
+    border: 1px solid #e0e4ed;
+    border-radius: 10px;
+    padding: 1.4rem 1.5rem;
+}
+.resource-item i { font-size: 1.8rem; color: #1a3c6e; flex-shrink: 0; margin-top: 0.2rem; }
+.resource-item h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+.resource-item p { color: #666; font-size: 0.92rem; margin-bottom: 0.4rem; }
+.resource-link {
+    display: inline-block;
+    margin-right: 1rem;
+    font-size: 0.88rem;
+    color: #1a3c6e;
+    font-weight: 600;
+    text-decoration: none;
+}
+.resource-link:hover { text-decoration: underline; }
+
+/* Contact grid */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+@media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+
+.contact-info-block h2,
+.contact-form-block h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1a3c6e;
+    margin-bottom: 1.5rem;
+}
+.contact-detail {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+    align-items: flex-start;
+}
+.contact-detail i { font-size: 1.4rem; color: #e67e22; flex-shrink: 0; margin-top: 0.15rem; }
+.contact-detail h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+.contact-detail p { color: #555; font-size: 0.9rem; margin: 0; }

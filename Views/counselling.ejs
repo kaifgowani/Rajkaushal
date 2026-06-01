@@ -1,0 +1,39 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+<% block('head').append('<link rel="stylesheet" href="/stylesheets/static-page.css">') %>
+
+<div class="static-page-container">
+    <div class="static-hero">
+        <h1><i class="bi bi-chat-heart"></i> Counselling Sessions</h1>
+        <p>Get career guidance and support from certified counsellors.</p>
+    </div>
+
+    <div class="static-content">
+        <div class="info-cards">
+            <div class="info-card">
+                <i class="bi bi-person-check"></i>
+                <h3>Career Counselling</h3>
+                <p>One-on-one sessions to help you identify your strengths and choose the right career path.</p>
+            </div>
+            <div class="info-card">
+                <i class="bi bi-journal-text"></i>
+                <h3>Resume & Interview Prep</h3>
+                <p>Expert guidance on building your resume and preparing for job interviews.</p>
+            </div>
+            <div class="info-card">
+                <i class="bi bi-mortarboard"></i>
+                <h3>Skill Development</h3>
+                <p>Advice on courses and certifications to improve your employability.</p>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Book a Session</h2>
+            <p>Online booking for counselling sessions is coming soon. Registered users can book sessions from their dashboard.</p>
+            <% if (locals.currentUser) { %>
+                <a href="/student/counselling" class="cta-btn">Go to My Sessions</a>
+            <% } else { %>
+                <a href="/login" class="cta-btn">Login to Book</a>
+            <% } %>
+        </div>
+    </div>
+</div>

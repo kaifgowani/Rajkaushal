@@ -1,0 +1,53 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+<% block('head').append('<link rel="stylesheet" href="/stylesheets/static-page.css">') %>
+
+<div class="static-page-container">
+    <div class="static-hero">
+        <h1><i class="bi bi-folder2-open"></i> Resources</h1>
+        <p>Useful guides, tools, and links to help you in your job search and career journey.</p>
+    </div>
+
+    <div class="static-content">
+        <div class="resource-list">
+            <div class="resource-item">
+                <i class="bi bi-file-earmark-text"></i>
+                <div>
+                    <h3>Resume Writing Guide</h3>
+                    <p>Learn how to write an effective resume that stands out to employers.</p>
+                </div>
+            </div>
+            <div class="resource-item">
+                <i class="bi bi-camera-video"></i>
+                <div>
+                    <h3>Interview Tips</h3>
+                    <p>Prepare for common interview questions and presentation skills.</p>
+                </div>
+            </div>
+            <div class="resource-item">
+                <i class="bi bi-laptop"></i>
+                <div>
+                    <h3>Free Online Courses</h3>
+                    <p>Links to free skill development courses on SWAYAM, NSDC, and other platforms.</p>
+                    <a href="https://swayam.gov.in/" target="_blank" class="resource-link">SWAYAM <i class="bi bi-box-arrow-up-right"></i></a>
+                    <a href="https://nsdcindia.org/" target="_blank" class="resource-link">NSDC <i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+            </div>
+            <div class="resource-item">
+                <i class="bi bi-award"></i>
+                <div>
+                    <h3>Skill India</h3>
+                    <p>Government of India's skill development initiative with 500+ courses.</p>
+                    <a href="https://www.skillindia.gov.in/" target="_blank" class="resource-link">Visit Skill India <i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+            </div>
+            <div class="resource-item">
+                <i class="bi bi-building-check"></i>
+                <div>
+                    <h3>Rajasthan Employment Exchange</h3>
+                    <p>Register with the state employment exchange for government job notifications.</p>
+                    <a href="https://employment.livelihoods.rajasthan.gov.in/" target="_blank" class="resource-link">Visit Portal <i class="bi bi-box-arrow-up-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

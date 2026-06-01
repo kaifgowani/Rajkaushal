@@ -1,0 +1,84 @@
+<%- layout('/layouts/boilerplate.ejs') %>
+<% block('head').append('<link rel="stylesheet" href="/stylesheets/static-page.css">') %>
+
+<div class="static-page-container">
+    <div class="static-hero">
+        <h1><i class="bi bi-envelope-heart"></i> Contact Us</h1>
+        <p>We're here to help. Reach out to the Raj Kaushal team.</p>
+    </div>
+
+    <div class="static-content">
+        <div class="contact-grid">
+            <div class="contact-info-block">
+                <h2>Get in Touch</h2>
+                <div class="contact-detail">
+                    <i class="bi bi-geo-alt"></i>
+                    <div>
+                        <h4>Address</h4>
+                        <p>DTE Bhawan, Jodhpur Road,<br>Jaipur, Rajasthan — 302005</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-telephone"></i>
+                    <div>
+                        <h4>Phone</h4>
+                        <p>+91 95711 953</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-envelope"></i>
+                    <div>
+                        <h4>Email</h4>
+                        <p>support@rajkaushal.rajasthan.gov.in</p>
+                    </div>
+                </div>
+                <div class="contact-detail">
+                    <i class="bi bi-clock"></i>
+                    <div>
+                        <h4>Office Hours</h4>
+                        <p>Monday – Friday: 9:30 AM – 6:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-block">
+                <h2>Send a Message</h2>
+                <div id="contact-success" class="alert alert-success" style="display:none;">Message sent! We'll get back to you shortly.</div>
+                <div id="contact-form">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="contact-name" placeholder="Your name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="contact-email" placeholder="your@email.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="contact-subject" placeholder="How can we help?">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" id="contact-message" rows="4" placeholder="Your message..."></textarea>
+                    </div>
+                    <button class="cta-btn" onclick="submitContact()">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function submitContact() {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name || !email || !message) {
+        alert('Please fill in your name, email, and message.');
+        return;
+    }
+    // Show success (no backend endpoint needed for now)
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('contact-success').style.display = 'block';
+}
+</script>
