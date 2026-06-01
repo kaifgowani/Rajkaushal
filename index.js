@@ -11,8 +11,8 @@ const User               = require('./models/User');
 const Job                = require('./models/Job');
 const Application        = require('./models/Application');
 const CounsellingSession = require('./models/CounsellingSession');
-const Mentorship         = require('./models/Mentorship');
-const Feedback           = require('./models/Feedback');
+const Mentorship         = require('./models/mentorship');
+const Feedback           = require('./models/feedback');
 
 // Middleware
 const { isLoggedIn, isAdmin } = require('./middleware/auth');
