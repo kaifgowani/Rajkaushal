@@ -14,7 +14,16 @@ const jobSchema = new mongoose.Schema({
   vacancies:   { type: Number, default: 1 },
   postedBy:    { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   isActive:    { type: Boolean, default: true },
-  createdAt:   { type: Date, default: Date.now }
-});
+  createdAt:   { type: Date, default: Date.now },
+  isActive: {
+        type: Boolean,
+        default: false
+    },
+  createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Job', jobSchema);

@@ -15,8 +15,7 @@ const Mentorship         = require('./models/mentorship');
 const Feedback           = require('./models/feedback');
 
 // Middleware
-const { isLoggedIn, isAdmin } = require('./middleware/auth');
-
+const { isLoggedIn, isAdmin, isEmployer } = require('./middleware/auth');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -78,7 +77,6 @@ app.get('/jobs', async (req, res) => {
 });
 
 // ─── Public Static Pages ──────────────────────────────────────────────────────
-app.get('/employer',    (req, res) => res.render('employer'));
 app.get('/counselling', (req, res) => res.render('counselling'));
 app.get('/resources',   (req, res) => res.render('resources'));
 app.get('/schemes',     (req, res) => res.render('schemes'));
@@ -95,7 +93,6 @@ app.get('/student/feedback',    isLoggedIn, (req, res) => res.render('student/fe
 // ─── Auth Routes ──────────────────────────────────────────────────────────────
 app.post('/signup', async (req, res) => {
   try {
-    // We added 'role' to this destructuring list
     const { role, fullName, email, password, mobile, dob, gender, category,
             aadhar, state, district, address, qualification, skills,
             experience, jobType, sector } = req.body;
@@ -111,21 +108,32 @@ app.post('/signup', async (req, res) => {
     const assignedRole = (role === 'employer') ? 'employer' : 'worker';
 
     const user = new User({
-      role: assignedRole, // Save the role to the database
+      role: assignedRole,
       fullName, email, password, mobile, dob, gender, category,
       aadhar, state, district, address, qualification,
       skills: skillsArray, experience, jobType, sector
     });
 
     await user.save();
+    
+    // Set the session
     req.session.userId = user._id;
     
-    // Redirect them to the correct page based on their role
-    if (assignedRole === 'employer') {
-        res.redirect('/employer');
-    } else {
-        res.redirect('/student/dashboard');
-    }
+    // CRITICAL FIX: Force the session to save to the database BEFORE redirecting
+    req.session.save((err) => {
+        if (err) {
+            console.error("Session save error during signup:", err);
+            return res.render('users/signup', { error: 'Account created, but automatic login failed. Please log in manually.' });
+        }
+        
+        // Redirect them to the correct page based on their role
+        if (assignedRole === 'employer') {
+            return res.redirect('/employer/dashboard');
+        } else {
+            return res.redirect('/student/dashboard');
+        }
+    });
+
   } catch (err) {
     console.error(err);
     res.render('users/signup', { error: 'Something went wrong. Please try again.' });
@@ -145,14 +153,22 @@ app.post('/login', async (req, res) => {
     // Set the session
     req.session.userId = user._id;
     
-    // Smart Role-Based Redirect
-    if (user.role === 'admin') {
-        res.redirect('/admin');
-    } else if (user.role === 'employer') {
-        res.redirect('/employer');
-    } else {
-        res.redirect('/student/dashboard'); // Default for workers
-    }
+    // CRITICAL FIX: Force the session to save to the database BEFORE redirecting
+    req.session.save((err) => {
+        if (err) {
+            console.error("Session save error:", err);
+            return res.render('users/login', { error: 'Login error. Please try again.' });
+        }
+        
+        // Smart Role-Based Redirect
+        if (user.role === 'admin') {
+            return res.redirect('/admin');
+        } else if (user.role === 'employer') {
+            return res.redirect('/employer/dashboard');
+        } else {
+            return res.redirect('/student/dashboard');
+        }
+    });
     
   } catch (err) {
     console.error(err);
@@ -346,10 +362,42 @@ app.post('/api/feedback/submit', isLoggedIn, async (req, res) => {
     }
 });
 
+app.get('/employer/dashboard', isLoggedIn, isEmployer, async (req, res) => {
+    try {
+        // 1. Fetch all jobs created by this specific employer
+        // (Assuming your Job model has a 'createdBy' or 'employerId' field linking to the User)
+        const myJobs = await Job.find({ createdBy: req.session.userId }).sort({ createdAt: -1 });
+
+        // 2. Calculate Analytics
+        const stats = {
+            totalPosted: myJobs.length,
+            activeLive: myJobs.filter(job => job.isActive === true).length,
+            pendingApproval: myJobs.filter(job => job.isActive === false).length,
+            // If your Job model tracks an array of applications, you can aggregate them here:
+            // totalApplications: myJobs.reduce((sum, job) => sum + job.applications.length, 0)
+        };
+
+        // 3. Render the new dashboard view with the data
+        res.render('employer/dashboard', { jobs: myJobs, stats });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error loading employer dashboard");
+    }
+});
+
 // ─── API: Employer Job Posting ────────────────────────────────────────────────
-app.post('/api/employer/post-job', async (req, res) => {
+// ─── API: Employer Job Posting & Dashboard ────────────────────────────────────
+
+// 1. Render the Job Posting Form
+app.get('/employer/post-job', isLoggedIn, isEmployer, (req, res) => {
+    res.render('employer'); // Renders your existing job posting form
+});
+
+// 2. Handle the Job Submission
+app.post('/api/employer/post-job', isLoggedIn, isEmployer, async (req, res) => {
     try {
         const { title, company, location, salary, jobType, description, requirements, sector, vacancies } = req.body;
+        
         const newJob = new Job({
             title,
             company,
@@ -359,14 +407,22 @@ app.post('/api/employer/post-job', async (req, res) => {
             sector,
             vacancies,
             description,
-            requirements: requirements ? requirements.split(',').map(r => r.trim()) : []
+            requirements: requirements ? requirements.split(',').map(r => r.trim()) : [],
+            // SECURITY INTEGRATION:
+            createdBy: req.session.userId, // Links this job to the logged-in employer
+            isActive: false // Forces the job into the Admin's moderation queue
         });
+        
         await newJob.save();
-        res.status(201).json({ success: true, message: 'Job posted successfully!' });
+        
+        // Redirect back to the analytics dashboard instead of sending raw JSON
+        res.redirect('/employer/dashboard'); 
     } catch (err) {
+        console.error(err);
         res.status(500).json({ success: false, error: err.message });
     }
 });
+
 
 // ─── Seed Jobs ────────────────────────────────────────────────────────────────
 async function seedJobs() {

@@ -65,8 +65,8 @@
         <% if (typeof currentUser !== 'undefined' && currentUser) { %>
             
             <% if (currentUser.role === 'employer') { %>
-                <li><a href="/employer" class="login-btn" style="background-color: #17a2b8;">LIST A JOB</a></li>
-            <% } %>
+    <li><a href="/employer/dashboard" class="login-btn" style="background-color: #17a2b8;">EMPLOYER DASHBOARD</a></li>
+<% } %>
 
             <% if (currentUser.role === 'admin') { %>
                 <li><a href="/admin" class="login-btn" style="background-color: #ffc107; color: #000;">ADMIN DASHBOARD</a></li>

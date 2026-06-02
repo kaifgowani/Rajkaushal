@@ -1,0 +1,83 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+    <!-- Header & Call to Action -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary fw-bold">Employer Dashboard</h2>
+        <a href="/employer/post-job" class="btn btn-success shadow-sm">
+            <i class="bi bi-plus-circle me-2"></i>Post New Job
+        </a>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center py-4 border-0 border-start border-primary border-4">
+                <h5 class="text-muted mb-2">Total Jobs Posted</h5>
+                <h2 class="display-5 fw-bold text-dark"><%= stats.totalPosted %></h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center py-4 border-0 border-start border-success border-4">
+                <h5 class="text-muted mb-2">Live & Approved</h5>
+                <h2 class="display-5 fw-bold text-success"><%= stats.activeLive %></h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm text-center py-4 border-0 border-start border-warning border-4">
+                <h5 class="text-muted mb-2">Pending Moderation</h5>
+                <h2 class="display-5 fw-bold text-warning"><%= stats.pendingApproval %></h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Job Tracking Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom py-3">
+            <h5 class="mb-0 fw-bold text-secondary">Your Job Listings</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Job Title</th>
+                            <th>Date Posted</th>
+                            <th>Status</th>
+                            <th>Applications</th>
+                            <th class="text-end pe-4">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (jobs.length === 0) { %>
+                            <tr>
+                                <td colspan="5" class="text-center py-5 text-muted">
+                                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                                    You haven't posted any jobs yet.
+                                </td>
+                            </tr>
+                        <% } else { %>
+                            <% jobs.forEach(job => { %>
+                                <tr>
+                                    <td class="ps-4 fw-bold"><%= job.title %></td>
+                                    <td><%= new Date(job.createdAt).toLocaleDateString() %></td>
+                                    <td>
+                                        <% if (job.isActive) { %>
+                                            <span class="badge bg-success px-3 py-2 rounded-pill">Live</span>
+                                        <% } else { %>
+                                            <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Pending</span>
+                                        <% } %>
+                                    </td>
+                                    <td><span class="badge bg-secondary">0</span></td>
+                                    <td class="text-end pe-4">
+                                        <button class="btn btn-sm btn-outline-primary">View</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
